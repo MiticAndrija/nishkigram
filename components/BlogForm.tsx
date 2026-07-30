@@ -156,23 +156,30 @@ export default function BlogForm({
     const endpoint = post ? `/api/admin/blog/${post.id}` : "/api/admin/blog";
     const method = post ? "PUT" : "POST";
 
-    const response = await fetch(endpoint, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    try {
+      const response = await fetch(endpoint, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    if (!response.ok) {
-      const payload = (await response.json()) as { error?: string };
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => ({}))) as {
+          error?: string;
+        };
+        setStatus("error");
+        setError(payload.error || `Čuvanje nije uspelo (HTTP ${response.status}).`);
+        return;
+      }
+
+      setStatus("idle");
+      setForm(emptyForm);
+      setTagsInput("");
+      onSaved();
+    } catch {
       setStatus("error");
-      setError(payload.error || "Čuvanje nije uspelo.");
-      return;
+      setError("Veza sa serverom nije uspela. Pokušajte ponovo.");
     }
-
-    setStatus("idle");
-    setForm(emptyForm);
-    setTagsInput("");
-    onSaved();
   };
 
   return (

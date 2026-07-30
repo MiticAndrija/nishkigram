@@ -40,8 +40,21 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const post = await createPost(input);
-  revalidatePath("/blog");
-  revalidatePath(`/blog/${post.slug}`);
-  return NextResponse.json({ post }, { status: 201 });
+  try {
+    const post = await createPost(input);
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${post.slug}`);
+    return NextResponse.json({ post }, { status: 201 });
+  } catch (error) {
+    console.error("Blog post creation failed:", error);
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Čuvanje objave nije uspelo.",
+      },
+      { status: 500 },
+    );
+  }
 }

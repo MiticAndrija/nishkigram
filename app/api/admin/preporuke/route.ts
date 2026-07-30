@@ -45,8 +45,21 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const recommendation = await createRecommendation(input);
-  revalidatePath("/preporuke");
-  revalidatePath(`/preporuke/${recommendation.slug}`);
-  return NextResponse.json({ recommendation }, { status: 201 });
+  try {
+    const recommendation = await createRecommendation(input);
+    revalidatePath("/preporuke");
+    revalidatePath(`/preporuke/${recommendation.slug}`);
+    return NextResponse.json({ recommendation }, { status: 201 });
+  } catch (error) {
+    console.error("Recommendation creation failed:", error);
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Čuvanje preporuke nije uspelo.",
+      },
+      { status: 500 },
+    );
+  }
 }
