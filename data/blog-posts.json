@@ -1,19 +1,23 @@
 [
   {
     "id": "0422a5c8-64d9-4242-84ed-f58147aa4521",
-    "title": "Najnoviji Blog",
-    "slug": "n",
-    "excerpt": "Kraci opis ovog novog bloga",
-    "author": "Niškigram",
-    "category": "",
+    "title": "Ćele-kula - najjeziviji spomenik u celoj Evropi nalazi se baš u Nišu",
+    "slug": "cele-kula",
+    "excerpt": "Ćele-kula u Nišu jedan je od najneobičnijih i najpotresnijih spomenika u Srbiji. Podigli su je Osmanlije nakon Bitke na Čegru 1809. godine, koristeći lobanje poginulih srpskih ustanika. Više od dva veka kasnije, Ćele-kula i dalje čuva sećanje na Stevana Sinđelića i ustanike koji su poginuli na Čegru.",
+    "author": "Filip Radojković",
+    "category": "Spomenici",
     "tags": [
-      "ovojetag"
+      "ćele kula",
+      "stevan",
+      "sinđelić",
+      "niš",
+      "spomenik"
     ],
-    "coverImage": "/images/nis-hero.png",
-    "coverImagePosition": "46% 100%",
-    "contentHtml": "evo teksta dugackog<p></p>",
+    "coverImage": "/images/cele kula nis.png",
+    "coverImagePosition": "42% 59%",
+    "contentHtml": "UvodPročitati i najbazičniji opis o ovom spomeniku mora izazvati u svakom ljudskom biću makar mrvicu, sa jedne strane, zainteresovanosti, a sa druge, jeze i strahopoštovanja. Utisak koji je taj opis obećao ne oseti se na prvi dojam - jer ono što vaše oči u tom trenutku vide su&nbsp;relativno moderan izgled neke građevine, uređeno dvorište i oseti se gotovo prijatna atmosfera nakon par koraka u njemu. Poduža staza koja vodi do par klupica koje u senki mame da se na njima predahne (ili možda služe da se na njih sedne i umiri ukoliko je neko potrešen tim zloglasnim spomenikom) čak i doprinosi tom dojmu da se nalazite u jednoj lepo sređenoj oblasti. Svakim korakom, motivi na pomenutoj kapeli počinju da se kristališu u vašem perifernom vidu i na zidovima se naziru krstovi, ali i lobanje ljudskog oblika. Nakon što ste ušli u pomenutu hladovinu i sunce više ne smeta vašim očima, vidite da te lobanje i nisu nešto strašne - baš su nekako \"fejk\", kao i da nisu ljudske... \"Ovo li je strašno?\", obraćate se šaljivim tonom i južnačkim dijalektom svom prijatelju koji je razvio sličan utisak, ali on na to reaguje nekom dismisivnom gestikulacijom, kao da je obazriv. \"U redu, šta god, hajmo da uđemo\".<h2><img src=\"https://lyvgsogy1a06bcnh.public.blob.vercel-storage.com/uploads/blog/1785957771097-49d6bf6d-6fc5-4bfb-99f4-e616ad39592d-dvoriste-cele-kule-u-nisu-KfFzKpHuUhPRsRCwOdTLxMgiCMiIPI.jpg\" alt=\"\" /><br /></h2><p><br /></p>",
     "published": true,
     "createdAt": "2026-08-05T17:18:44.460Z",
-    "updatedAt": "2026-08-05T17:18:44.460Z"
+    "updatedAt": "2026-08-05T19:23:03.709Z"
   }
 ]
