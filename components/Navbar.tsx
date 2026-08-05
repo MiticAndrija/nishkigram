@@ -34,10 +34,13 @@ const searchItems = [
 export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
   const isAboutPage = pathname === "/o-nama";
+  const isHomePage = pathname === "/";
+  const isTransparent = isHomePage && !isScrolled && !isMenuOpen;
 
   const navItems = [
     {
@@ -47,6 +50,20 @@ export default function Navbar() {
     { href: "/blog", label: "Blog" },
     { href: "/preporuke", label: "Preporuke" },
   ];
+
+  useEffect(() => {
+    if (!isHomePage) {
+      return;
+    }
+
+    const handleScroll = () => setIsScrolled(window.scrollY > 48);
+    const frameId = window.requestAnimationFrame(handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isHomePage]);
 
   useEffect(() => {
     if (!isSearchOpen) {
@@ -104,7 +121,13 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 z-50 w-full bg-[#fdfaf6]/90 px-4 py-3 text-[#5c4a3d] backdrop-blur-md md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:px-8 md:py-4">
+    <nav
+      className={`fixed top-0 z-50 w-full px-4 py-3 transition-colors duration-300 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:px-8 md:py-4 ${
+        isTransparent
+          ? "bg-transparent text-[#fdfaf6]"
+          : "bg-[#fdfaf6]/90 text-[#5c4a3d] shadow-sm backdrop-blur-md"
+      }`}
+    >
       <div className="flex min-w-0 items-center justify-between gap-3 md:contents">
         <Link
           href="/"
@@ -138,7 +161,11 @@ export default function Navbar() {
             type="button"
             aria-label="Otvori pretragu"
             onClick={() => setIsSearchOpen(true)}
-            className="hidden h-11 w-11 items-center justify-center rounded-full border border-[#5c4a3d]/20 transition-colors hover:bg-[#5c4a3d]/5 md:flex"
+            className={`hidden h-11 w-11 items-center justify-center rounded-full border transition-colors md:flex ${
+              isTransparent
+                ? "border-white/40 hover:bg-white/10"
+                : "border-[#5c4a3d]/20 hover:bg-[#5c4a3d]/5"
+            }`}
           >
             <svg
               className="h-5 w-5"
@@ -161,7 +188,11 @@ export default function Navbar() {
             aria-controls="mobile-navigation"
             aria-expanded={isMenuOpen}
             onClick={() => setIsMenuOpen((open) => !open)}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#5c4a3d]/20 transition-colors hover:bg-[#5c4a3d]/5 md:hidden"
+            className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors md:hidden ${
+              isTransparent
+                ? "border-white/40 hover:bg-white/10"
+                : "border-[#5c4a3d]/20 hover:bg-[#5c4a3d]/5"
+            }`}
           >
             <svg
               className="h-5 w-5"

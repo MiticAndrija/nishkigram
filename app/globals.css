@@ -31,6 +31,45 @@ svg {
   max-width: 100%;
 }
 
+.hero-word-reel {
+  animation: hero-word-reel 8s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+.hero-word-reel > span {
+  height: 1.25rem;
+  flex: 0 0 1.25rem;
+  line-height: 1.25rem;
+}
+
+@keyframes hero-word-reel {
+  0%,
+  15% {
+    transform: translateY(0);
+  }
+  22%,
+  37% {
+    transform: translateY(-1.25rem);
+  }
+  44%,
+  59% {
+    transform: translateY(-2.5rem);
+  }
+  66%,
+  81% {
+    transform: translateY(-3.75rem);
+  }
+  88%,
+  100% {
+    transform: translateY(-5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-word-reel {
+    animation: none;
+  }
+}
+
 .blog-post-content {
   overflow-wrap: anywhere;
 }
