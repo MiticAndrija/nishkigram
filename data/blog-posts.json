@@ -1,5 +1,22 @@
 [
   {
+    "id": "0422a5c8-64d9-4242-84ed-f58147aa4521",
+    "title": "Najnoviji Blog",
+    "slug": "n",
+    "excerpt": "Kraci opis ovog novog bloga",
+    "author": "Niškigram",
+    "category": "",
+    "tags": [
+      "ovojetag"
+    ],
+    "coverImage": "/images/nis-hero.png",
+    "coverImagePosition": "46% 100%",
+    "contentHtml": "evo teksta dugackog<p></p>",
+    "published": true,
+    "createdAt": "2026-08-05T17:18:44.460Z",
+    "updatedAt": "2026-08-05T17:18:44.460Z"
+  },
+  {
     "id": "83d97d5d-fa0c-46cf-ba51-031fa6c1cdca",
     "title": "test",
     "slug": "t",
