@@ -22,7 +22,10 @@ export default function CinematicHero() {
 
   return (
     <MotionConfig reducedMotion="user">
-    <section ref={sectionRef} className="relative h-[155svh] bg-[#2f241d]">
+    <section
+      ref={sectionRef}
+      className="relative h-[132svh] bg-[#2f241d] sm:h-[136svh]"
+    >
       <div className="sticky top-0 h-svh overflow-hidden">
         <motion.div
           className="absolute -inset-x-3 -inset-y-12 sm:-inset-x-6 sm:-inset-y-16"
