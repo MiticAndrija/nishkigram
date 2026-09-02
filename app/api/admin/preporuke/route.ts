@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-import { adminCookieName, verifyAdminSession } from "@/lib/adminAuth";
+import { rejectUnauthorizedAdminRequest } from "@/lib/adminApi";
 import {
   createRecommendation,
   getAllRecommendations,
@@ -8,10 +8,6 @@ import {
 } from "@/lib/recommendations";
 
 export const dynamic = "force-dynamic";
-
-function isAuthorized(request: NextRequest) {
-  return verifyAdminSession(request.cookies.get(adminCookieName)?.value);
-}
 
 function validateInput(input: RecommendationInput) {
   return Boolean(
@@ -22,9 +18,8 @@ function validateInput(input: RecommendationInput) {
 }
 
 export async function GET(request: NextRequest) {
-  if (!isAuthorized(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const rejection = rejectUnauthorizedAdminRequest(request);
+  if (rejection) return rejection;
 
   return NextResponse.json({
     recommendations: await getAllRecommendations(true),
@@ -32,9 +27,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  if (!isAuthorized(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const rejection = rejectUnauthorizedAdminRequest(request, { csrf: true });
+  if (rejection) return rejection;
 
   const input = (await request.json()) as RecommendationInput;
 

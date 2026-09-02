@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { adminCookieName, verifyAdminSession } from "@/lib/adminAuth";
+import { rejectUnauthorizedAdminRequest } from "@/lib/adminApi";
 import { deletePost, getPostById, updatePost, type BlogPostInput } from "@/lib/blog";
 
 export const dynamic = "force-dynamic";
-
-function isAuthorized(request: NextRequest) {
-  return verifyAdminSession(request.cookies.get(adminCookieName)?.value);
-}
 
 function validateInput(input: BlogPostInput) {
   return Boolean(
@@ -22,9 +18,8 @@ export async function PUT(
   request: NextRequest,
   context: { params: Promise<{ id: string }> },
 ) {
-  if (!isAuthorized(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const rejection = rejectUnauthorizedAdminRequest(request, { csrf: true });
+  if (rejection) return rejection;
 
   const input = (await request.json()) as BlogPostInput;
 
@@ -57,9 +52,8 @@ export async function DELETE(
   request: NextRequest,
   context: { params: Promise<{ id: string }> },
 ) {
-  if (!isAuthorized(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const rejection = rejectUnauthorizedAdminRequest(request, { csrf: true });
+  if (rejection) return rejection;
 
   const { id } = await context.params;
   const existingPost = await getPostById(id, true);

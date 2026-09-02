@@ -17,7 +17,7 @@ export type UploadedBlogImage = {
 
 const uploadPublicPath = "/uploads/blog/";
 const uploadDirectory = path.join(process.cwd(), "public", "uploads", "blog");
-const maxUploadSizeBytes = 50 * 1024 * 1024;
+const maxUploadSizeBytes = 4 * 1024 * 1024;
 
 const mimeExtensions = new Map([
   ["image/jpeg", "jpg"],
@@ -32,6 +32,25 @@ export const blogImageUploadConfig = {
   uploadPublicPath,
   accept: ".jpg,.jpeg,.png,.webp",
 };
+
+export function isSafeBlogUploadPathname(pathname: string) {
+  return /^uploads\/blog\/[a-zA-Z0-9][a-zA-Z0-9_-]{0,179}\.(?:jpe?g|png|webp)$/.test(
+    pathname,
+  );
+}
+
+function isVercelBlobImageUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return (
+      url.protocol === "https:" &&
+      url.hostname.endsWith(".public.blob.vercel-storage.com") &&
+      isSafeBlogUploadPathname(url.pathname.replace(/^\//, ""))
+    );
+  } catch {
+    return false;
+  }
+}
 
 function sanitizeBaseName(filename: string) {
   const parsed = path.parse(filename);
@@ -175,10 +194,29 @@ export function validateBlogImageUpload(file: File) {
   }
 
   if (file.size > maxUploadSizeBytes) {
-    return "Slika moze biti velika najvise 50 MB.";
+    return "Slika moze biti velika najvise 4 MB.";
   }
 
   return "";
+}
+
+async function hasValidImageSignature(file: File) {
+  const bytes = new Uint8Array(await file.slice(0, 12).arrayBuffer());
+  if (file.type === "image/jpeg") {
+    return bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  }
+  if (file.type === "image/png") {
+    return [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a].every(
+      (value, index) => bytes[index] === value,
+    );
+  }
+  if (file.type === "image/webp") {
+    return (
+      String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
+      String.fromCharCode(...bytes.slice(8, 12)) === "WEBP"
+    );
+  }
+  return false;
 }
 
 export async function saveBlogImageUpload(file: File) {
@@ -186,6 +224,10 @@ export async function saveBlogImageUpload(file: File) {
 
   if (validationError) {
     throw new Error(validationError);
+  }
+
+  if (!(await hasValidImageSignature(file))) {
+    throw new Error("Sadrzaj fajla ne odgovara podrzanom formatu slike.");
   }
 
   const extension = mimeExtensions.get(file.type) || "jpg";
@@ -230,7 +272,7 @@ function extractBlogUploadUrlsFromHtml(html = "") {
 
     if (
       src.startsWith(uploadPublicPath) ||
-      src.includes(".public.blob.vercel-storage.com")
+      isVercelBlobImageUrl(src)
     ) {
       urls.add(src);
     }
@@ -244,7 +286,7 @@ export function getBlogUploadUrls(reference: UploadedImageReference) {
 
   if (
     reference.coverImage?.startsWith(uploadPublicPath) ||
-    reference.coverImage?.includes(".public.blob.vercel-storage.com")
+    (reference.coverImage && isVercelBlobImageUrl(reference.coverImage))
   ) {
     urls.add(reference.coverImage);
   }
@@ -258,7 +300,7 @@ export async function removeUploadedBlogImage(imageUrl: string) {
     (process.env.BLOB_READ_WRITE_TOKEN ||
       process.env.BLOB_STORE_ID ||
       process.env.VERCEL) &&
-    imageUrl.includes(".public.blob.vercel-storage.com")
+    isVercelBlobImageUrl(imageUrl)
   ) {
     try {
       await del(imageUrl);
