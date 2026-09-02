@@ -44,20 +44,6 @@ Uploaded images are also validated on the server before being stored.
 
 Sensitive configuration such as passwords and secrets is kept in environment variables and is not stored in the repository.
 
-## Screenshots
-
-### Home
-
-![Nishkigram Home](docs/home.png)
-
-### Recommendations
-
-![Nishkigram Recommendations](docs/recommendations.png)
-
-### Blog
-
-![Nishkigram Blog](docs/blog.png)
-
 ## Running Locally
 
 Clone the repository:
