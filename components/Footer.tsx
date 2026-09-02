@@ -18,7 +18,7 @@ export default function Footer() {
             href="/"
             className="font-serif text-2xl font-bold text-[#4a382b] transition-opacity hover:opacity-75"
           >
-            Niskigram
+            Niškigram
           </Link>
           <p className="mt-2 max-w-md text-sm leading-6 text-[#5c4a3d]/70">
             Lokalni vodič kroz priče, mesta i ritam Niša.
