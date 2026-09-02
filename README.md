@@ -1,68 +1,67 @@
 # Nishkigram
 
-Nishkigram is a web platform focused on places, recommendations, and local content from Niš, Serbia. I built the project as a way to work on a real-world Next.js application, from the public website and content management to deployment and administration.
+Nishkigram is a local media website for stories, city guides, and recommendations from Niš. It includes searchable public content and a password-protected admin area for managing posts, recommendations, categories, and uploaded images.
 
-**Live website:** https://nishkigram.com/
-
-## About
-
-The idea behind Nishkigram is to have one place for discovering interesting locations and content related to Niš.
-
-The project includes the public-facing website as well as a private admin area that I use to manage recommendations, blog posts, categories, and uploaded images.
-
-The application is deployed on Vercel and connected to GitHub for deployment from the main branch.
+**Live Demo:** https://nishkigram.com/
 
 ## Features
 
-* Local recommendations with categories
-* Blog and content management
-* Responsive layout for desktop and mobile
-* Private admin panel
-* Creating, editing, and deleting content through the admin panel
-* Image upload and management
-* Server-side admin authentication
-* Protected admin API routes
-* Login rate limiting
-* Production deployment with a custom domain
+* Blog posts and local recommendations with dedicated detail pages
+* Search and category filtering
+* Responsive design for desktop and mobile devices
+* Password-protected admin dashboard
+* Create, edit, publish, unpublish, and delete content
+* Rich-text editing with links, images, and YouTube embeds
+* Blog and recommendation category management
+* Image uploads with format, size, and file-signature validation
+* Media library with usage tracking and deletion controls
+* JSON-based content storage with GitHub-backed updates in production
+* Optional Vercel Blob storage and Google Analytics
 
 ## Tech Stack
 
-* Next.js
-* React
-* TypeScript
-* Tailwind CSS
-* Vercel
-* Vercel Blob
+* **Application:** Next.js 16 App Router, React 19, TypeScript
+* **Styling:** Tailwind CSS 4, PostCSS
+* **Animation:** Motion
+* **Content storage:** Local JSON files in development, GitHub Contents API in production
+* **Media storage:** Local filesystem in development, Vercel Blob when configured
+* **Tooling:** npm, ESLint 9, Next.js Core Web Vitals rules
 
-## Admin and Security
+## Project Structure
 
-The admin section is not publicly accessible without authentication. Admin authentication and protected operations are handled on the server.
+```text
+app/
+├── api/admin/             # Authenticated content and upload endpoints
+├── admin/                 # Blog, recommendation, and media management
+├── blog/                  # Blog listing and article pages
+├── preporuke/             # Recommendation listing and detail pages
+├── o-nama/                # About page
+├── layout.tsx             # Root layout, fonts, footer, and analytics
+└── page.tsx               # Home page
+components/                # Public UI and admin editors/managers
+data/                      # Posts, recommendations, and category JSON files
+lib/                       # Auth, content, GitHub, upload, and sanitization logic
+public/images/             # Static site imagery
+```
 
-The project uses HTTP-only cookies, signed sessions with expiration, CSRF protection for state-changing admin requests, protected API routes, and rate limiting for login attempts.
+The public pages read published records from the JSON files. Admin API routes validate the signed session, sanitize submitted HTML, and write updated JSON locally or through the GitHub Contents API. Uploaded images use `public/uploads/blog` locally and Vercel Blob in a configured deployment.
 
-Uploaded images are also validated on the server before being stored.
+## Getting Started
 
-Sensitive configuration such as passwords and secrets is kept in environment variables and is not stored in the repository.
+### Prerequisites
 
-## Running Locally
+* Node.js 20.9 or newer
+* npm
 
-Clone the repository:
+### Installation
 
 ```bash
 git clone https://github.com/MiticAndrija/nishkigram.git
-```
-
-Open the project:
-
-```bash
 cd nishkigram
+npm ci
 ```
 
-Install the dependencies:
-
-```bash
-npm install
-```
+Create `.env.local` if you want to use the admin area. See [Configuration](#configuration) for the available variables.
 
 Start the development server:
 
@@ -70,23 +69,53 @@ Start the development server:
 npm run dev
 ```
 
-The application will be available at:
+Open http://localhost:3000. The admin login is available at http://localhost:3000/admin/login.
 
-```text
-http://localhost:3000
+To create and run a production build:
+
+```bash
+npm run build
+npm start
 ```
 
-Some functionality requires environment variables that are configured separately and are not included in the repository.
+## Configuration
 
-## Deployment
+The public site can run from the committed data without environment variables. Configure the following values to enable the admin area and production storage features:
 
-Nishkigram is deployed on Vercel. Changes pushed to the main branch are deployed to the production environment.
+```dotenv
+# Required for admin authentication
+ADMIN_PASSWORD=choose-a-password
+ADMIN_SESSION_SECRET=generate-a-long-random-secret
 
-**Production:** https://nishkigram.com/
+# Required for GitHub-backed content updates in production
+GITHUB_TOKEN=github-token-with-contents-write-access
+GITHUB_REPO=MiticAndrija/nishkigram
+GITHUB_BRANCH=main
+
+# Optional: Vercel Blob storage
+BLOB_READ_WRITE_TOKEN=vercel-blob-read-write-token
+
+# Optional: Google Analytics
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+```
+
+`GITHUB_BRANCH` defaults to `main`. If GitHub integration is not configured, admin changes are written to the local `data` directory. If Vercel Blob is not configured, uploaded images are stored locally in `public/uploads/blog`.
+
+Never commit `.env.local` or production credentials.
+
+## Available Scripts
+
+```bash
+npm run dev      # Start the development server
+npm run build    # Create a production build
+npm start        # Run the production server
+npm run lint     # Run ESLint
+```
 
 ## Author
 
-**Andrija Mitić**
+Andrija Mitić
 
-[GitHub](https://github.com/MiticAndrija)
-[LinkedIn](https://www.linkedin.com/in/andrija-mitic/)
+LinkedIn: [linkedin.com/in/andrija-mitic](https://www.linkedin.com/in/andrija-mitic/)
+
+GitHub: [github.com/MiticAndrija](https://github.com/MiticAndrija)
