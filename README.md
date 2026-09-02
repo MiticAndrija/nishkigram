@@ -1,72 +1,78 @@
 # Nishkigram
 
-A modern web application built with Next.js, focused on delivering a clean, responsive, and user-friendly experience.
+Nishkigram is a web platform focused on places, recommendations, and local content from Niš, Serbia. I built the project as a way to work on a real-world Next.js application, from the public website and content management to deployment and administration.
 
-**Live Demo:** https://nishkigram.com/
+**Live website:** https://nishkigram.com/
 
----
+## About
 
-## About The Project
+The idea behind Nishkigram is to have one place for discovering interesting locations and content related to Niš.
 
-Nishkigram is a modern web platform designed with a focus on simplicity, performance, and visual consistency. The project demonstrates the use of modern frontend technologies and best practices, including reusable components, responsive layouts, and optimized application structure.
+The project includes the public-facing website as well as a private admin area that I use to manage recommendations, blog posts, categories, and uploaded images.
 
-The goal of this project was to build a polished user interface while improving practical experience with the Next.js ecosystem and modern web development workflows.
-
----
+The application is deployed on Vercel and connected to GitHub for deployment from the main branch.
 
 ## Features
 
-* Responsive design optimized for desktop and mobile devices
-* Modern component-based architecture
-* Reusable React components
-* Clean and consistent user interface
-* Optimized performance using Next.js
-* Production deployment with Vercel
+* Local recommendations with categories
+* Blog and content management
+* Responsive layout for desktop and mobile
+* Private admin panel
+* Creating, editing, and deleting content through the admin panel
+* Image upload and management
+* Server-side admin authentication
+* Protected admin API routes
+* Login rate limiting
+* Production deployment with a custom domain
 
----
+## Tech Stack
 
-## Built With
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+* Vercel
+* Vercel Blob
 
-* [Next.js](https://nextjs.org/) — React framework for production applications
-* [React](https://react.dev/) — UI library for building interactive interfaces
-* [TypeScript](https://www.typescriptlang.org/) — Type-safe JavaScript development
-* [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS framework
-* [Vercel](https://vercel.com/) — Deployment and hosting platform
+## Admin and Security
 
----
+The admin section is not publicly accessible without authentication. Admin authentication and protected operations are handled on the server.
 
-## Project Structure
+The project uses HTTP-only cookies, signed sessions with expiration, CSRF protection for state-changing admin requests, protected API routes, and rate limiting for login attempts.
 
-```text
-app/
- ├── page.tsx
+Uploaded images are also validated on the server before being stored.
 
-components/
- ├── Navbar.tsx
- ├── Hero.tsx
- ├── AnnouncementCard.tsx
- └── FeatureCards.tsx
-```
+Sensitive configuration such as passwords and secrets is kept in environment variables and is not stored in the repository.
 
----
+## Screenshots
 
-## Getting Started
+### Home
 
-### Installation
+![Nishkigram Home](docs/home.png)
+
+### Recommendations
+
+![Nishkigram Recommendations](docs/recommendations.png)
+
+### Blog
+
+![Nishkigram Blog](docs/blog.png)
+
+## Running Locally
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/MiticAndrija/nishkigram-test.git
+git clone https://github.com/MiticAndrija/nishkigram.git
 ```
 
-Navigate into the project directory:
+Open the project:
 
 ```bash
-cd nishkigram-test
+cd nishkigram
 ```
 
-Install dependencies:
+Install the dependencies:
 
 ```bash
 npm install
@@ -78,18 +84,23 @@ Start the development server:
 npm run dev
 ```
 
-Open the application:
+The application will be available at:
 
 ```text
 http://localhost:3000
 ```
 
----
+Some functionality requires environment variables that are configured separately and are not included in the repository.
 
 ## Deployment
 
-This project is deployed using Vercel.
+Nishkigram is deployed on Vercel. Changes pushed to the main branch are deployed to the production environment.
 
-Live application:
+**Production:** https://nishkigram.com/
 
-https://nishkigram.com/
+## Author
+
+**Andrija Mitić**
+
+[GitHub](https://github.com/MiticAndrija)
+[LinkedIn](https://www.linkedin.com/in/andrija-mitic/)
