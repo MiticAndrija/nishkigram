@@ -27,7 +27,7 @@ export default async function AdminBlogPage() {
                 href="/admin/aktivnosti"
                 className="rounded-full border border-[#5c4a3d]/20 px-4 py-2 text-sm font-semibold text-[#5c4a3d] transition-colors hover:bg-[#5c4a3d]/8"
               >
-                Aktivnosti
+                Aktuelnost
               </Link>
               <Link
                 href="/admin/blog"

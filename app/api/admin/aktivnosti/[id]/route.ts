@@ -13,7 +13,7 @@ export async function PUT(request: NextRequest, context: Context) {
   try {
     const { id } = await context.params;
     const activity = await updateActivity(id, await request.json());
-    if (!activity) return NextResponse.json({ error: "Aktivnost nije pronađena." }, { status: 404 });
+    if (!activity) return NextResponse.json({ error: "Aktuelnost nije pronađena." }, { status: 404 });
     revalidatePath("/aktivnosti");
     return NextResponse.json({ activity });
   } catch (error) { return activityApiError(error); }
@@ -24,7 +24,7 @@ export async function DELETE(request: NextRequest, context: Context) {
   if (rejection) return rejection;
   try {
     const { id } = await context.params;
-    if (!(await deleteActivity(id))) return NextResponse.json({ error: "Aktivnost nije pronađena." }, { status: 404 });
+    if (!(await deleteActivity(id))) return NextResponse.json({ error: "Aktuelnost nije pronađena." }, { status: 404 });
     revalidatePath("/aktivnosti");
     return NextResponse.json({ ok: true });
   } catch (error) { return activityApiError(error); }

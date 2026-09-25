@@ -41,7 +41,7 @@ async function getUsedUploadMap() {
 
   for (const activity of activities) {
     for (const url of getBlogUploadUrls(activity)) {
-      markUsed(url, `Aktivnost: ${activity.title}`);
+      markUsed(url, `Aktuelnost: ${activity.title}`);
     }
   }
 
@@ -49,10 +49,11 @@ async function getUsedUploadMap() {
 }
 
 export async function getAdminMediaItems() {
-  const [uploads, usedUploads] = await Promise.all([
-    listUploadedBlogImages(),
-    getUsedUploadMap(),
-  ]);
+  // Read content first: activity expiry cleanup can remove an image while the
+  // media list is being assembled, so listing uploads concurrently can return
+  // a stale item that no longer exists.
+  const usedUploads = await getUsedUploadMap();
+  const uploads = await listUploadedBlogImages();
 
   return uploads.map((upload): AdminMediaItem => {
     const usedBy = usedUploads.get(upload.url) ?? [];

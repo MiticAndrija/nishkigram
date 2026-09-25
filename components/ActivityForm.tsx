@@ -90,7 +90,7 @@ export default function ActivityForm({ activity, categories, onSaved, onCancelEd
         method: activity ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(input),
       });
       const payload = await response.json();
-      if (!response.ok || !payload.activity) throw new Error(payload.error || "Čuvanje aktivnosti nije uspelo.");
+      if (!response.ok || !payload.activity) throw new Error(payload.error || "Čuvanje aktuelnosti nije uspelo.");
       onDirtyChange(false);
       onBusyChange(false);
       onSaved(payload.activity);
@@ -103,8 +103,8 @@ export default function ActivityForm({ activity, categories, onSaved, onCancelEd
     <form onSubmit={submit} className="grid gap-7 rounded-[1.5rem] border border-[#5c4a3d]/10 bg-[#f4efe6] p-4 sm:p-6 lg:grid-cols-[1.05fr_0.95fr]">
       <fieldset disabled={busy || disabled} className="grid min-w-0 gap-4">
         <legend className="mb-4">
-          <span className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8b6f56]">{activity ? "Izmena aktivnosti" : "Nova aktivnost"}</span>
-          <h2 className="mt-2 font-serif text-3xl text-[#4a382b]">Forma aktivnosti</h2>
+          <span className="text-sm font-semibold tracking-[0.18em] text-[#8b6f56]">{activity ? "Izmena aktuelnosti" : "Nova aktuelnost"}</span>
+          <h2 className="mt-2 font-serif text-3xl text-[#4a382b]">Forma aktuelnosti</h2>
         </legend>
         <label><span className="mb-2 block font-semibold text-[#4a382b]">Naziv</span>
           <input required maxLength={160} value={form.title} onChange={(event) => setText("title", event.target.value)} className={inputClass} />
@@ -152,20 +152,20 @@ export default function ActivityForm({ activity, categories, onSaved, onCancelEd
           {!form.coverImage ? <p className="text-sm text-[#5c4a3d]/65">Bez izabrane slike koristi se podrazumevana slika Niša.</p> : null}
         </div>
         <label><span className="mb-2 block font-semibold text-[#4a382b]">Alt tekst slike</span>
-          <input maxLength={240} value={form.coverImageAlt} onChange={(event) => setText("coverImageAlt", event.target.value)} className={inputClass} placeholder="Kratak opis slike; podrazumevano naziv aktivnosti" />
+          <input maxLength={240} value={form.coverImageAlt} onChange={(event) => setText("coverImageAlt", event.target.value)} className={inputClass} placeholder="Kratak opis slike; podrazumevano naziv aktuelnosti" />
         </label>
-        <CoverImageFocusPicker imageUrl={preview.coverImage} alt={form.coverImageAlt || form.title || "Slika aktivnosti"} value={form.coverImagePosition} heightClass="h-56" onChange={(value) => { if (!busy && !disabled) setText("coverImagePosition", value); }} />
+        <CoverImageFocusPicker imageUrl={preview.coverImage} alt={form.coverImageAlt || form.title || "Slika aktuelnosti"} value={form.coverImagePosition} heightClass="h-56" onChange={(value) => { if (!busy && !disabled) setText("coverImagePosition", value); }} />
         <label className="flex items-center gap-3 font-semibold text-[#4a382b]">
           <input type="checkbox" checked={form.published} onChange={(event) => setForm((current) => ({ ...current, published: event.target.checked }))} className="h-5 w-5 accent-[#5c4a3d]" />Objavljeno
         </label>
         {error ? <p role="alert" className="font-semibold text-red-700">{error}</p> : null}
         <div className="flex flex-wrap gap-3">
-          <button type="submit" className="rounded-lg bg-[#5c4a3d] px-6 py-3 font-semibold text-[#fdfaf6] transition-colors hover:bg-[#47382f] disabled:opacity-60">{saving ? "Čuvam..." : activity ? "Sačuvaj izmene" : "Kreiraj aktivnost"}</button>
+          <button type="submit" className="rounded-lg bg-[#5c4a3d] px-6 py-3 font-semibold text-[#fdfaf6] transition-colors hover:bg-[#47382f] disabled:opacity-60">{saving ? "Čuvam..." : activity ? "Sačuvaj izmene" : "Kreiraj aktuelnost"}</button>
           {activity ? <button type="button" onClick={onCancelEdit} className={buttonClass}>Odustani</button> : null}
         </div>
       </fieldset>
       <div className="min-w-0">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#8b6f56]">Pregled kartice</p>
+        <p className="mb-3 text-sm font-semibold tracking-[0.18em] text-[#8b6f56]">Pregled kartice</p>
         <ActivityCard activity={preview} preview />
       </div>
     </form>

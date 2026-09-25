@@ -33,6 +33,16 @@ export function getBelgradeDate(now = new Date()) {
   return `${part("year")}-${part("month")}-${part("day")}`;
 }
 
+export function getBelgradeDateTime(now = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Belgrade",
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  }).formatToParts(now);
+  const part = (type: string) => parts.find((item) => item.type === type)!.value;
+  return `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}`;
+}
+
 export function isValidActivityDate(value: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || value < "0001-01-01") return false;
   const date = new Date(`${value}T12:00:00Z`);
@@ -41,6 +51,13 @@ export function isValidActivityDate(value: string) {
 
 export function isActivityExpired(date: string, today = getBelgradeDate()) {
   return !isValidActivityDate(date) || date < today;
+}
+
+export function isActivityExpiredAt(date: string, time = "", now = new Date()) {
+  if (!isValidActivityDate(date)) return true;
+  if (date < getBelgradeDate(now)) return true;
+  if (date > getBelgradeDate(now) || !time) return false;
+  return `${date}T${time}` <= getBelgradeDateTime(now);
 }
 
 export function formatActivityDate(date: string) {
@@ -83,7 +100,7 @@ function inputText(value: unknown, label: string, max: number, required = false)
 
 export function parseActivityInput(value: unknown): ActivityInput {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
-    throw new ActivityValidationError("Neispravni podaci aktivnosti.");
+    throw new ActivityValidationError("Neispravni podaci aktuelnosti.");
   }
   const input = value as Record<string, unknown>;
   const title = inputText(input.title, "Naziv", 160, true);

@@ -7,7 +7,7 @@ export default function ActivityCard({ activity, preview = false }: { activity: 
   const content = (
     <>
       <div className="relative h-52 bg-[#e8e0d5] sm:h-64">
-        <Image src={coverImage} alt={activity.coverImageAlt || activity.title || "Slika aktivnosti"} fill
+        <Image src={coverImage} alt={activity.coverImageAlt || activity.title || "Slika aktuelnosti"} fill
           sizes="(min-width: 1200px) 384px, (min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           style={{ objectPosition: activity.coverImagePosition || "center bottom" }}
@@ -19,10 +19,10 @@ export default function ActivityCard({ activity, preview = false }: { activity: 
             {activity.category || "Kategorija"}
           </span>
         </div>
-        {preview ? <h3 className="font-serif text-2xl leading-tight text-[#4a382b] sm:text-3xl">{activity.title || "Naziv aktivnosti"}</h3>
+        {preview ? <h3 className="font-serif text-2xl leading-tight text-[#4a382b] sm:text-3xl">{activity.title || "Naziv aktuelnosti"}</h3>
           : <h2 className="font-serif text-2xl leading-tight text-[#4a382b] sm:text-3xl">{activity.title}</h2>}
         <p className="mt-4 flex flex-wrap gap-x-3 text-sm font-semibold text-[#5c4a3d]/65">
-          {activity.date ? <time dateTime={activity.date}>{formatActivityDate(activity.date)}</time> : "Datum aktivnosti"}
+          {activity.date ? <time dateTime={activity.date}>{formatActivityDate(activity.date)}</time> : "Datum aktuelnosti"}
           {activity.time ? <><span aria-hidden="true">/</span><time dateTime={activity.time}>{activity.time}</time></> : null}
         </p>
         <p className="mt-3 leading-7 text-[#5c4a3d]/75">{activity.location || "Lokacija"}</p>

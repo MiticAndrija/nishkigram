@@ -2,13 +2,31 @@ import { readJsonFile, writeJsonFile } from "@/lib/github";
 import { getActivityCategories } from "@/lib/activityCategories";
 import { removeUnusedBlogUploads } from "@/lib/blogUploads";
 import {
-  ActivityValidationError, normalizeActivities, parseActivityInput, sortActivities, upcomingActivities,
+  ActivityValidationError, isActivityExpiredAt, normalizeActivities, parseActivityInput, sortActivities, upcomingActivities,
   type Activity, type ActivityInput,
 } from "@/lib/activityMeta";
 
 const activitiesPath = "data/activities.json";
 
+async function purgeExpiredActivities() {
+  const { data, sha } = await readJsonFile<unknown>(activitiesPath, [], true, true);
+  if (!Array.isArray(data)) throw new Error("Neispravan format activities.json. Podaci nisu promenjeni.");
+  const normalized = normalizeActivities(data);
+  const expiredIds = new Set(normalized.filter((activity) => isActivityExpiredAt(activity.date, activity.time)).map((activity) => activity.id));
+  if (!expiredIds.size) return;
+  const remaining = data.filter((item) => !item || typeof item.id !== "string" || !expiredIds.has(item.id));
+  await writeJsonFile(activitiesPath, remaining, `Delete expired activities: ${[...expiredIds].join(", ")}`, sha);
+  try {
+    await Promise.all(normalized.filter((activity) => expiredIds.has(activity.id)).map((activity) =>
+      removeUnusedBlogUploads({ coverImage: activity.coverImage }, normalizeActivities(remaining)),
+    ));
+  } catch (error) {
+    console.warn("Expired activities deleted, but uploaded image cleanup failed.", error);
+  }
+}
+
 export async function getAllActivities(forceLive = true) {
+  await purgeExpiredActivities();
   const { data } = await readJsonFile<unknown>(activitiesPath, [], forceLive);
   return sortActivities(normalizeActivities(data));
 }

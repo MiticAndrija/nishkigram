@@ -114,17 +114,18 @@ npm run lint     # Run ESLint
 npm test         # Activity dates, validation, storage, categories, and shared image regression tests
 ```
 
-## Activities
+## Aktuelnost
 
 `/admin/aktivnosti` uses the existing admin session to create, edit, publish,
 unpublish, and delete events. Data is stored in `data/activities.json`, and
 categories in `data/activity-categories.json`, using the existing local/GitHub
 JSON layer and the same environment variables. No additional configuration is required.
 
-The public list includes only published events dated today or later in
-`Europe/Belgrade`, ordered by date and then time (unspecified times last).
-Events remain visible for their whole calendar day; expired records remain in
-the admin. There are no activity detail pages or slugs. New activities start as drafts.
+The public list includes only published events whose date and optional time have
+not passed in `Europe/Belgrade`, ordered by date and then time (unspecified times
+last). On the next public/admin read, expired records are automatically removed
+from the JSON/GitHub store. There are no activity detail pages or slugs. New
+activities start as drafts.
 
 Activity images share the existing upload endpoint, local/Vercel Blob storage,
 media library, alt text, and focus picker. Media usage and automatic cleanup

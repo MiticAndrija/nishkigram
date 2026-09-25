@@ -111,7 +111,7 @@ async function isolatedStorage(callback) {
   }
 }
 
-test("local JSON activity CRUD, category safety and expiry retention", async () => isolatedStorage(async (fixture) => {
+test("local JSON activity CRUD, category safety and automatic expiry deletion", async () => isolatedStorage(async (fixture) => {
   const activities = loadProject("lib/activities.ts");
   const categories = loadProject("lib/activityCategories.ts");
   const created = await activities.createActivity(valid);
@@ -120,7 +120,8 @@ test("local JSON activity CRUD, category safety and expiry retention", async () 
   const updated = await activities.updateActivity(created.id, { ...valid, published: false, date: "2020-01-01" });
   assert.equal(updated.createdAt, created.createdAt);
   assert.equal((await activities.getUpcomingActivities()).length, 0);
-  assert.equal((await activities.getAllActivities()).length, 1);
+  assert.equal((await activities.getAllActivities()).length, 0);
+  const active = await activities.createActivity({ ...valid, date: "2099-10-12" });
   await assert.rejects(categories.deleteActivityCategory("Muzika"), /Kategorija se koristi/);
   await assert.rejects(categories.updateActivityCategory("Muzika", "Koncerti"), /Kategorija se koristi/);
   await categories.addActivityCategory("  Pozorište  ");
@@ -130,9 +131,17 @@ test("local JSON activity CRUD, category safety and expiry retention", async () 
   await categories.deleteActivityCategory("Predstave");
   await assert.rejects(activities.createActivity({ ...valid, category: "Nepostojeća" }), /postojeću/);
   assert.equal(await activities.updateActivity("missing", valid), null);
-  assert.equal(await activities.deleteActivity(created.id), true);
-  assert.equal(await activities.deleteActivity(created.id), false);
+  assert.equal(await activities.deleteActivity(active.id), true);
+  assert.equal(await activities.deleteActivity(active.id), false);
   assert.deepEqual(await activities.getAllActivities(), []);
+}));
+
+test("an activity with a passed time is deleted while a later time remains", async () => isolatedStorage(async () => {
+  const activities = loadProject("lib/activities.ts");
+  const old = await activities.createActivity({ ...valid, title: "Prošao termin", date: "2020-01-01", time: "23:59" });
+  const future = await activities.createActivity({ ...valid, title: "Budući termin", date: "2099-01-01", time: "00:01" });
+  assert.ok(old.id && future.id);
+  assert.deepEqual((await activities.getAllActivities()).map((activity) => activity.title), ["Budući termin"]);
 }));
 
 test("recommendation category behavior survives shared store extraction", async () => isolatedStorage(async () => {
@@ -160,7 +169,7 @@ test("mutations preserve malformed rows and refuse invalid JSON instead of overw
   assert.equal(fs.readFileSync(file, "utf8"), "invalid JSON");
 }));
 
-test("shared images remain used by draft/expired activities after blog cleanup", async () => isolatedStorage(async (fixture) => {
+test("expired activity cleanup also removes its now-unused shared image", async () => isolatedStorage(async (fixture) => {
   const image = "/uploads/blog/shared.png";
   fs.mkdirSync(path.join(fixture, "public/uploads/blog"), { recursive: true });
   fs.mkdirSync(path.join(fixture, "data"));
@@ -172,11 +181,8 @@ test("shared images remain used by draft/expired activities after blog cleanup",
   assert.ok(fs.existsSync(imageFile));
   const media = loadProject("lib/adminMedia.ts");
   const items = await media.getAdminMediaItems();
-  assert.equal(items[0].used, true);
-  assert.deepEqual(items[0].usedBy, ["Aktivnost: Koncert"]);
-  await assert.rejects(media.deleteAdminMediaItem(image), /još koristi/);
-  fs.writeFileSync(path.join(fixture, "data/activities.json"), "[]");
-  await uploads.removeUnusedBlogUploads({ coverImage: image }, []);
+  assert.equal(items.some((item) => item.url === image), false);
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(fixture, "data/activities.json"))), []);
   assert.equal(fs.existsSync(imageFile), false);
 }));
 

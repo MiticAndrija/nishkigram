@@ -6,10 +6,10 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const searchItems = [
   {
-    title: "Aktivnosti",
+    title: "Aktuelnost",
     description: "Koncerti, žurke, izložbe i druga dešavanja u Nišu.",
     href: "/aktivnosti",
-    keywords: "aktivnosti desavanja dešavanja događaji dogadjaji koncerti festivali nis niš",
+    keywords: "aktuelnosti desavanja dešavanja događaji dogadjaji koncerti festivali nis niš",
   },
   {
     title: "O nama",
@@ -55,7 +55,7 @@ export default function Navbar() {
     },
     { href: "/blog", label: "Blog" },
     { href: "/preporuke", label: "Preporuke" },
-    { href: "/aktivnosti", label: "AKTIVNOSTI" },
+    { href: "/aktivnosti", label: "Aktuelnost" },
   ];
 
   useEffect(() => {

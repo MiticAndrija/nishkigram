@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import ActivityForm from "@/components/ActivityForm";
-import { formatActivityDate, getBelgradeDate, isActivityExpired, sortActivities, type Activity } from "@/lib/activityMeta";
+import { formatActivityDate, sortActivities, type Activity } from "@/lib/activityMeta";
 import { unsavedChangesConfirmationMessage } from "@/lib/useUnsavedChangesWarning";
 
 const buttonClass = "rounded-md border border-[#5c4a3d]/25 px-4 py-2 text-sm font-semibold text-[#5c4a3d] disabled:opacity-60";
@@ -15,8 +15,8 @@ async function requestJson(url: string, method: string, body?: unknown) {
   return payload;
 }
 
-export default function AdminActivityManager({ initialActivities, initialCategories, today }: {
-  initialActivities: Activity[]; initialCategories: string[]; today: string;
+export default function AdminActivityManager({ initialActivities, initialCategories }: {
+  initialActivities: Activity[]; initialCategories: string[];
 }) {
   const [activities, setActivities] = useState(initialActivities);
   const [categories, setCategories] = useState(initialCategories);
@@ -30,7 +30,6 @@ export default function AdminActivityManager({ initialActivities, initialCategor
   const [newCategory, setNewCategory] = useState("");
   const [editingCategory, setEditingCategory] = useState("");
   const [categoryName, setCategoryName] = useState("");
-  const [currentDate, setCurrentDate] = useState(today);
   const formRef = useRef<HTMLDivElement>(null);
   const disabled = busy || formBusy;
 
@@ -47,15 +46,14 @@ export default function AdminActivityManager({ initialActivities, initialCategor
   }
 
   async function mutateActivity(activity: Activity, method: "PUT" | "DELETE") {
-    if (method === "DELETE" && !window.confirm(`Da li sigurno brišete aktivnost „${activity.title}“?`)) return;
+    if (method === "DELETE" && !window.confirm(`Da li sigurno brišete aktuelnost „${activity.title}“?`)) return;
     if (editing?.id === activity.id && dirty && !window.confirm(unsavedChangesConfirmationMessage)) return;
     setBusy(true); setError(""); setMessage("");
     try {
       const payload = await requestJson(`/api/admin/aktivnosti/${activity.id}`, method, method === "PUT" ? { ...activity, published: !activity.published } : undefined);
       setActivities((current) => method === "DELETE" ? current.filter((item) => item.id !== activity.id) : sortActivities(current.map((item) => item.id === activity.id ? payload.activity : item)));
       if (editing?.id === activity.id) resetForm(null);
-      setMessage(method === "DELETE" ? "Aktivnost je obrisana." : "Status aktivnosti je promenjen.");
-      setCurrentDate(getBelgradeDate());
+      setMessage(method === "DELETE" ? "Aktuelnost je obrisana." : "Status aktuelnosti je promenjen.");
     } catch (error) { setError(error instanceof Error ? error.message : "Veza sa serverom nije uspela."); }
     finally { setBusy(false); }
   }
@@ -79,7 +77,7 @@ export default function AdminActivityManager({ initialActivities, initialCategor
         <ActivityForm key={formVersion} activity={editing} categories={categories} disabled={busy} onDirtyChange={setDirty} onBusyChange={setFormBusy}
           onCancelEdit={() => edit(null)} onSaved={(activity) => {
             setActivities((current) => sortActivities([activity, ...current.filter((item) => item.id !== activity.id)]));
-            resetForm(null); setMessage("Aktivnost je sačuvana."); setError(""); setCurrentDate(getBelgradeDate());
+            resetForm(null); setMessage("Aktuelnost je sačuvana."); setError("");
           }} />
       </div>
       <div aria-live="polite">
@@ -87,9 +85,9 @@ export default function AdminActivityManager({ initialActivities, initialCategor
         {message ? <p className="font-semibold text-green-800">{message}</p> : null}
       </div>
       <section className="rounded-[1.5rem] border border-[#5c4a3d]/10 bg-[#fdfaf6] p-4 sm:p-6">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8b6f56]">Kategorije</p>
-        <h2 className="mt-2 font-serif text-3xl text-[#4a382b]">Kategorije aktivnosti</h2>
-        <p className="mt-3 text-sm leading-6 text-[#5c4a3d]/75">Preimenovanje i brisanje su dostupni kada kategoriju ne koristi nijedna aktivnost, uključujući nacrte i istekle aktivnosti.</p>
+        <p className="text-sm font-semibold tracking-[0.18em] text-[#8b6f56]">Kategorije</p>
+        <h2 className="mt-2 font-serif text-3xl text-[#4a382b]">Kategorije aktuelnosti</h2>
+        <p className="mt-3 text-sm leading-6 text-[#5c4a3d]/75">Preimenovanje i brisanje su dostupni kada kategoriju ne koristi nijedna aktuelnost, uključujući nacrte i istekle aktuelnosti.</p>
         <form onSubmit={(event) => { event.preventDefault(); void mutateCategory("POST"); }} className="mt-5 flex flex-col gap-3 sm:flex-row">
           <input aria-label="Nova kategorija" required maxLength={40} value={newCategory} onChange={(event) => setNewCategory(event.target.value)} placeholder="Nova kategorija" className={inputClass} />
           <button disabled={disabled} className="rounded-lg bg-[#5c4a3d] px-5 py-3 font-semibold text-[#fdfaf6] disabled:opacity-60">Dodaj</button>
@@ -113,7 +111,7 @@ export default function AdminActivityManager({ initialActivities, initialCategor
       </section>
       <section className="rounded-[1.5rem] border border-[#5c4a3d]/10 bg-[#fdfaf6] p-4 sm:p-6">
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-          <div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8b6f56]">Upravljanje</p><h2 className="mt-2 font-serif text-3xl text-[#4a382b]">Sve aktivnosti</h2></div>
+          <div><p className="text-sm font-semibold tracking-[0.18em] text-[#8b6f56]">Upravljanje</p><h2 className="mt-2 font-serif text-3xl text-[#4a382b]">Sve aktuelnosti</h2></div>
           <form action="/api/admin/logout" method="post" onSubmit={(event) => { if (dirty && !window.confirm(unsavedChangesConfirmationMessage)) event.preventDefault(); }}><button disabled={disabled} className={buttonClass}>Odjavi se</button></form>
         </div>
         <div className="mt-6 grid gap-4">
@@ -121,7 +119,6 @@ export default function AdminActivityManager({ initialActivities, initialCategor
             <div className="min-w-0 [overflow-wrap:anywhere]">
               <div className="mb-2 flex flex-wrap gap-3 text-sm font-semibold text-[#5c4a3d]/65">
                 <span>{activity.published ? "Objavljeno" : "Nacrt"}</span>
-                {isActivityExpired(activity.date, currentDate) ? <span className="text-red-800">Isteklo</span> : null}
                 <span>{activity.category}</span>
               </div>
               <h3 className="font-serif text-2xl text-[#4a382b]">{activity.title}</h3>
@@ -133,7 +130,7 @@ export default function AdminActivityManager({ initialActivities, initialCategor
               <button type="button" disabled={disabled} onClick={() => mutateActivity(activity, "PUT")} className={buttonClass}>{activity.published ? "Povuci objavu" : "Objavi"}</button>
               <button type="button" disabled={disabled} onClick={() => mutateActivity(activity, "DELETE")} className={`${buttonClass} text-red-800`}>Obriši</button>
             </div>
-          </article>) : <p className="rounded-lg bg-[#f4efe6] p-5 text-[#5c4a3d]/75">Nema aktivnosti. Kreirajte prvu aktivnost kroz formu iznad.</p>}
+          </article>) : <p className="rounded-lg bg-[#f4efe6] p-5 text-[#5c4a3d]/75">Nema aktuelnosti. Kreirajte prvu aktuelnost kroz formu iznad.</p>}
         </div>
       </section>
     </div>

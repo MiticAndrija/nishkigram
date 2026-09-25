@@ -8,9 +8,9 @@ const store = createCategoryStore("data/activity-categories.json", defaultActivi
   strict: true,
   async beforeChange(category) {
     const { data } = await readJsonFile<unknown>("data/activities.json", [], true, true);
-    if (!Array.isArray(data)) throw new Error("Neispravan format aktivnosti.");
+    if (!Array.isArray(data)) throw new Error("Neispravan format aktuelnosti.");
     if (data.some((item) => typeof item?.category === "string" && item.category.toLowerCase() === category.toLowerCase())) {
-      throw new ActivityValidationError("Kategorija se koristi. Prvo promenite kategoriju tih aktivnosti, pa je preimenujte ili obrišite.");
+      throw new ActivityValidationError("Kategorija se koristi. Prvo promenite kategoriju tih aktuelnosti, pa je preimenujte ili obrišite.");
     }
   },
 });
