@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "title": "NisDanas",
+    "category": "Ostalo",
+    "date": "2026-09-25",
+    "time": "",
+    "location": "Nis",
+    "url": "https://www.youtube.com/",
+    "coverImage": "/images/nis-hero.png",
+    "coverImageAlt": "",
+    "coverImagePosition": "21% 9%",
+    "published": true,
+    "id": "e8defbac-53c4-47fb-b193-f97dbcf06b8a",
+    "createdAt": "2026-09-25T08:49:21.846Z",
+    "updatedAt": "2026-09-25T08:49:21.846Z"
+  }
+]
