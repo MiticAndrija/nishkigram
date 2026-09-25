@@ -1,9 +1,9 @@
 [
   {
     "title": "NisDanas",
-    "category": "Ostalo",
+    "category": "Stranica",
     "date": "2026-09-25",
-    "time": "",
+    "time": "10:52",
     "location": "Nis",
     "url": "https://www.youtube.com/",
     "coverImage": "/images/nis-hero.png",
@@ -12,6 +12,6 @@
     "published": true,
     "id": "e8defbac-53c4-47fb-b193-f97dbcf06b8a",
     "createdAt": "2026-09-25T08:49:21.846Z",
-    "updatedAt": "2026-09-25T08:49:21.846Z"
+    "updatedAt": "2026-09-25T08:50:44.510Z"
   }
 ]
