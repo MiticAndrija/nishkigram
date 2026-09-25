@@ -1,17 +1,1 @@
-[
-  {
-    "title": "test",
-    "category": "Stranica",
-    "date": "2026-09-25",
-    "time": "11:06",
-    "location": "Nis",
-    "url": "https://github.com/MiticAndrija/nishkigram",
-    "coverImage": "/images/nis-hero.png",
-    "coverImageAlt": "",
-    "coverImagePosition": "0% 0%",
-    "published": true,
-    "id": "d5194808-cc55-44ef-8087-7761bfae0714",
-    "createdAt": "2026-09-25T09:05:18.039Z",
-    "updatedAt": "2026-09-25T09:05:18.039Z"
-  }
-]
+[]
