@@ -3,6 +3,7 @@ import Link from "next/link";
 const footerLinks = [
   { label: "Blog", href: "/blog" },
   { label: "Preporuke", href: "/preporuke" },
+  { label: "Aktivnosti", href: "/aktivnosti" },
   { label: "O nama", href: "/o-nama" },
   { label: "Kontakt", href: "https://www.instagram.com/nishkigram/" },
 ];

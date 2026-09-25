@@ -6,6 +6,7 @@ import {
 } from "@/lib/blogUploads";
 import { getAllPosts } from "@/lib/blog";
 import { getAllRecommendations } from "@/lib/recommendations";
+import { getAllActivities } from "@/lib/activities";
 
 export type AdminMediaItem = UploadedBlogImage & {
   used: boolean;
@@ -13,9 +14,10 @@ export type AdminMediaItem = UploadedBlogImage & {
 };
 
 async function getUsedUploadMap() {
-  const [posts, recommendations] = await Promise.all([
+  const [posts, recommendations, activities] = await Promise.all([
     getAllPosts(true),
     getAllRecommendations(true),
+    getAllActivities(true),
   ]);
   const usedUploads = new Map<string, string[]>();
 
@@ -34,6 +36,12 @@ async function getUsedUploadMap() {
   for (const recommendation of recommendations) {
     for (const url of getBlogUploadUrls(recommendation)) {
       markUsed(url, `Preporuka: ${recommendation.title}`);
+    }
+  }
+
+  for (const activity of activities) {
+    for (const url of getBlogUploadUrls(activity)) {
+      markUsed(url, `Aktivnost: ${activity.title}`);
     }
   }
 

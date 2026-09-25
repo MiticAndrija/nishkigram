@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { put, del, list } from "@vercel/blob";
+import { readJsonFile } from "@/lib/github";
 
 type UploadedImageReference = {
   coverImage?: string;
@@ -337,7 +338,22 @@ export async function removeUnusedBlogUploads(
   const candidates = getBlogUploadUrls(removedReference);
   const stillUsed = new Set<string>();
 
-  for (const reference of remainingReferences) {
+  // Uploads are shared by all sections, including drafts and expired activities.
+  // A failed live read must stop cleanup rather than delete a referenced image.
+  const storedReferences = await Promise.all(
+    ["data/blog-posts.json", "data/recommendations.json", "data/activities.json"].map(async (file) => {
+      const { data } = await readJsonFile<unknown>(file, [], true, true);
+      if (!Array.isArray(data)) throw new Error(`Invalid image references in ${file}`);
+      return data.filter((item): item is UploadedImageReference =>
+        Boolean(item) && typeof item === "object",
+      ).map((item) => ({
+        coverImage: typeof item.coverImage === "string" ? item.coverImage : "",
+        contentHtml: typeof item.contentHtml === "string" ? item.contentHtml : "",
+      }));
+    }),
+  );
+
+  for (const reference of [...remainingReferences, ...storedReferences.flat()]) {
     for (const imageUrl of getBlogUploadUrls(reference)) {
       stillUsed.add(imageUrl);
     }

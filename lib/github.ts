@@ -104,6 +104,7 @@ export async function readJsonFile<T>(
   relativePath: string,
   defaultValue: T,
   forceLive: boolean = false,
+  strict: boolean = false,
 ): Promise<{ data: T; sha: string | null }> {
   const token = process.env.GITHUB_TOKEN;
   const repo = process.env.GITHUB_REPO;
@@ -116,6 +117,7 @@ export async function readJsonFile<T>(
       }
       return { data: JSON.parse(content) as T, sha };
     } catch (error) {
+      if (strict) throw error;
       console.error(`Error reading ${relativePath} live from GitHub:`, error);
     }
   }
@@ -124,7 +126,8 @@ export async function readJsonFile<T>(
   try {
     const raw = await fs.readFile(localPath, "utf8");
     return { data: JSON.parse(raw) as T, sha: null };
-  } catch {
+  } catch (error) {
+    if (strict && (error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
     return { data: defaultValue, sha: null };
   }
 }

@@ -7,6 +7,7 @@ Nishkigram is a local media website for stories, city guides, and recommendation
 ## Features
 
 * Blog posts and local recommendations with dedicated detail pages
+* Upcoming activities at `/aktivnosti`, linking directly to official external event pages
 * Search and category filtering
 * Responsive design for desktop and mobile devices
 * Password-protected admin dashboard
@@ -110,7 +111,28 @@ npm run dev      # Start the development server
 npm run build    # Create a production build
 npm start        # Run the production server
 npm run lint     # Run ESLint
+npm test         # Activity dates, validation, storage, categories, and shared image regression tests
 ```
+
+## Activities
+
+`/admin/aktivnosti` uses the existing admin session to create, edit, publish,
+unpublish, and delete events. Data is stored in `data/activities.json`, and
+categories in `data/activity-categories.json`, using the existing local/GitHub
+JSON layer and the same environment variables. No additional configuration is required.
+
+The public list includes only published events dated today or later in
+`Europe/Belgrade`, ordered by date and then time (unspecified times last).
+Events remain visible for their whole calendar day; expired records remain in
+the admin. There are no activity detail pages or slugs. New activities start as drafts.
+
+Activity images share the existing upload endpoint, local/Vercel Blob storage,
+media library, alt text, and focus picker. Media usage and automatic cleanup
+check all three content sections, including drafts and expired activities.
+Categories can be added; unused categories can be renamed or deleted. Reassign
+activities before renaming/deleting a used category. This keeps category changes
+within one JSON write. Malformed public records are skipped, while mutations
+preserve unrelated rows and stop if a live persistence read fails.
 
 ## Author
 

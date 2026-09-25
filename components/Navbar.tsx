@@ -6,6 +6,12 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const searchItems = [
   {
+    title: "Aktivnosti",
+    description: "Koncerti, žurke, izložbe i druga dešavanja u Nišu.",
+    href: "/aktivnosti",
+    keywords: "aktivnosti desavanja dešavanja događaji dogadjaji koncerti festivali nis niš",
+  },
+  {
     title: "O nama",
     description: "Saznajte vise o Niskigramu i nasoj misiji.",
     href: "/o-nama",
@@ -49,6 +55,7 @@ export default function Navbar() {
     },
     { href: "/blog", label: "Blog" },
     { href: "/preporuke", label: "Preporuke" },
+    { href: "/aktivnosti", label: "AKTIVNOSTI" },
   ];
 
   useEffect(() => {
@@ -144,7 +151,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <div className="hidden items-center gap-8 justify-self-center font-medium md:flex">
+        <div className="hidden items-center gap-4 justify-self-center font-medium md:flex lg:gap-8">
           {navItems.map((item) => (
             <Link
               key={`${item.href}-${item.label}`}

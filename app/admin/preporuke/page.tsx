@@ -24,6 +24,12 @@ export default async function AdminRecommendationsPage() {
           <div className="mb-10">
             <div className="mb-5 flex flex-wrap gap-3">
               <Link
+                href="/admin/aktivnosti"
+                className="rounded-full border border-[#5c4a3d]/20 px-4 py-2 text-sm font-semibold text-[#5c4a3d] transition-colors hover:bg-[#5c4a3d]/8"
+              >
+                Aktivnosti
+              </Link>
+              <Link
                 href="/admin/blog"
                 className="rounded-full border border-[#5c4a3d]/20 px-4 py-2 text-sm font-semibold text-[#5c4a3d] transition-colors hover:bg-[#5c4a3d]/8"
               >
