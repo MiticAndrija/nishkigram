@@ -28,7 +28,7 @@ export default function Footer() {
 
         <div className="flex flex-col gap-4 md:items-end">
           <nav
-            aria-label="Footer navigation"
+            aria-label="Navigacija u podnožju"
             className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold"
           >
             {footerLinks.map((link) => (
@@ -44,7 +44,7 @@ export default function Footer() {
             ))}
           </nav>
           <p className="text-sm text-[#5c4a3d]/65">
-            © {currentYear} Ni<Link href="/admin/blog" className="text-inherit cursor-default">sk</Link>igram. All rights reserved.
+            © {currentYear} Ni<Link href="/admin/blog" className="text-inherit cursor-default">sk</Link>igram. Sva prava zadržana.
           </p>
         </div>
       </div>

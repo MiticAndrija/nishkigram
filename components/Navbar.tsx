@@ -30,6 +30,12 @@ const searchItems = [
     keywords: "preporuke kafici restorani barovi mesta nis",
   },
   {
+    title: "Virtuelni Niš",
+    description: "Virtuelna šetnja kroz kulturno nasleđe Niša.",
+    href: "/virtuelni-nis",
+    keywords: "virtuelni virtualni nis niš tvrđava tvrdjava medijana vr tabula peutingeriana digitalno nasleđe nasledje",
+  },
+  {
     title: "Instagram",
     description: "Otvorite @nishkigram profil.",
     href: "https://www.instagram.com/nishkigram/",
@@ -45,8 +51,8 @@ export default function Navbar() {
   const inputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
   const isAboutPage = pathname === "/o-nama";
-  const isHomePage = pathname === "/";
-  const isTransparent = isHomePage && !isScrolled && !isMenuOpen;
+  const hasPhotoHero = pathname === "/" || pathname === "/virtuelni-nis";
+  const isTransparent = hasPhotoHero && !isScrolled && !isMenuOpen;
 
   const navItems = [
     {
@@ -56,10 +62,11 @@ export default function Navbar() {
     { href: "/blog", label: "Blog" },
     { href: "/preporuke", label: "Preporuke" },
     { href: "/aktivnosti", label: "Aktuelnost" },
+    { href: "/virtuelni-nis", label: "Virtuelni Niš" },
   ];
 
   useEffect(() => {
-    if (!isHomePage) {
+    if (!hasPhotoHero) {
       return;
     }
 
@@ -70,7 +77,7 @@ export default function Navbar() {
       window.cancelAnimationFrame(frameId);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isHomePage]);
+  }, [hasPhotoHero, pathname]);
 
   useEffect(() => {
     if (!isSearchOpen) {
@@ -129,7 +136,8 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 z-50 w-full px-4 py-3 transition-colors duration-300 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:px-8 md:py-4 ${
+      aria-label="Glavna navigacija"
+      className={`fixed top-0 z-50 w-full px-4 py-3 transition-colors duration-300 motion-reduce:transition-none md:flex md:items-center md:justify-between md:gap-4 md:px-6 md:py-4 lg:px-8 ${
         isTransparent
           ? "bg-transparent text-[#fdfaf6]"
           : "bg-[#fdfaf6]/90 text-[#5c4a3d] shadow-sm backdrop-blur-md"
@@ -139,26 +147,36 @@ export default function Navbar() {
         <Link
           href="/"
           aria-label="Niškigram početna"
-          className="flex min-w-0 items-center gap-2 justify-self-start transition-opacity hover:opacity-80 md:gap-3"
+          className="flex min-w-0 shrink-0 items-center gap-2 justify-self-start transition-opacity hover:opacity-80 lg:gap-3"
         >
           <div className="flex h-10 w-10 shrink-0 items-center justify-center">
             <svg className="h-8 w-8 fill-current" viewBox="0 0 24 24">
               <path d="M12 2L8 10H16L12 2Z M8 10V22H16V10Z" />
             </svg>
           </div>
-          <span className="truncate font-serif text-xl font-bold sm:text-2xl">
+          <span className="truncate font-serif text-xl font-bold sm:text-2xl md:text-xl lg:text-2xl">
             Niškigram
           </span>
         </Link>
 
-        <div className="hidden items-center gap-4 justify-self-center font-medium md:flex lg:gap-8">
+        <div className="hidden items-center gap-3 whitespace-nowrap font-medium md:flex md:text-sm lg:gap-6 lg:text-base xl:gap-8">
           {navItems.map((item) => (
             <Link
               key={`${item.href}-${item.label}`}
               href={item.href}
-              className="transition-opacity hover:opacity-70"
+              aria-current={pathname === item.href ? "page" : undefined}
+              className={`inline-flex min-h-11 items-center gap-2 focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current motion-reduce:transition-none ${
+                item.href === "/virtuelni-nis"
+                  ? `rounded-full border px-4 font-semibold transition-[background-color,border-color] duration-300 ${
+                      isTransparent
+                        ? "border-[#fdfaf6]/50 hover:bg-[#fdfaf6]/15"
+                        : "border-[#5c4a3d]/30 hover:border-[#5c4a3d]/60 hover:bg-[#5c4a3d]/8 aria-[current=page]:bg-[#5c4a3d]/5"
+                    }`
+                  : "transition-opacity hover:opacity-70"
+              }`}
             >
               {item.label}
+              {item.href === "/virtuelni-nis" ? <span aria-hidden="true">↗</span> : null}
             </Link>
           ))}
         </div>
@@ -231,7 +249,7 @@ export default function Navbar() {
       {isMenuOpen ? (
         <div
           id="mobile-navigation"
-          className="mt-3 rounded-2xl border border-[#5c4a3d]/10 bg-[#fdfaf6] p-2 shadow-xl md:hidden"
+          className="mt-3 rounded-2xl border border-[#5c4a3d]/10 bg-[#fdfaf6] p-2 text-[#5c4a3d] shadow-xl md:hidden"
         >
           <button
             type="button"
@@ -248,9 +266,15 @@ export default function Navbar() {
               key={`mobile-${item.href}-${item.label}`}
               href={item.href}
               onClick={() => setIsMenuOpen(false)}
-              className="flex min-h-11 items-center rounded-xl px-4 py-3 text-base font-semibold transition-colors hover:bg-[#5c4a3d]/8"
+              aria-current={pathname === item.href ? "page" : undefined}
+              className={`flex min-h-11 items-center justify-between rounded-xl px-4 py-3 text-base font-semibold transition-colors hover:bg-[#5c4a3d]/8 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5c4a3d] motion-reduce:transition-none ${
+                item.href === "/virtuelni-nis"
+                  ? "mt-2 border border-[#5c4a3d]/30 aria-[current=page]:bg-[#5c4a3d]/5"
+                  : ""
+              }`}
             >
               {item.label}
+              {item.href === "/virtuelni-nis" ? <span aria-hidden="true">↗</span> : null}
             </Link>
           ))}
         </div>

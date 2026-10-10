@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import ParallaxCitySection from "@/components/ParallaxCitySection";
 import RecommendationCard from "@/components/RecommendationCard";
 import ScrollReveal from "@/components/ScrollReveal";
+import VirtualNisPromo from "@/components/VirtualNisPromo";
 import { getPublishedPosts } from "@/lib/blog";
 import { getPublishedRecommendations } from "@/lib/recommendations";
 
@@ -86,6 +87,8 @@ export default async function Home() {
           ) : null}
 
           <ParallaxCitySection />
+
+          <VirtualNisPromo />
 
           <InstagramFeed />
 
