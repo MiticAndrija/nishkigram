@@ -21,7 +21,7 @@ export default async function PreporukePage() {
       <main className="pt-24">
         <section className="px-4 pb-14 pt-12 sm:px-6 md:px-10 md:pb-24 md:pt-16">
           <div className="mx-auto max-w-6xl">
-            <div className="max-w-3xl">
+            <div data-enter className="max-w-3xl">
               <p className="mb-5 text-sm font-semibold uppercase tracking-[0.24em] text-[#8b6f56]">
                 Niškigram preporučuje
               </p>

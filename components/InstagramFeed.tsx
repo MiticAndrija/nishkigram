@@ -4,7 +4,7 @@ export default function InstagramFeed() {
   return (
     <section className="bg-[#fdfaf6] px-4 py-20 sm:px-6 md:px-10 md:py-28">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-10 max-w-3xl sm:mb-14">
+        <div data-reveal className="mb-10 max-w-3xl sm:mb-14">
           <p className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-[#8b6f56]">
             @nishkigram
           </p>

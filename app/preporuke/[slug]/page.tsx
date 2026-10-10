@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/MotionLink";
 import { notFound } from "next/navigation";
 import BlogPostContent from "@/components/BlogPostContent";
 import Navbar from "@/components/Navbar";
@@ -40,7 +40,7 @@ export default async function RecommendationPage({
       <main className="pt-24">
         <article>
           <header className="px-4 pb-10 pt-12 sm:px-6 md:px-10 md:pt-14">
-            <div className="mx-auto max-w-4xl text-center">
+            <div data-enter className="mx-auto max-w-4xl text-center">
               <Link
                 href="/preporuke"
                 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#8b6f56] hover:text-[#5c4a3d]"
@@ -71,6 +71,7 @@ export default async function RecommendationPage({
           <div className="px-4 sm:px-6 md:px-10">
             <div className="relative mx-auto h-72 max-w-6xl overflow-hidden rounded-3xl bg-[#e8e0d5] shadow-2xl sm:h-[420px] sm:rounded-[2rem]">
               <Image
+                data-reveal-image
                 src={coverImage}
                 alt={recommendation.coverImageAlt ?? recommendation.title}
                 fill

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/MotionLink";
 import ScrollReveal from "@/components/ScrollReveal";
 import nisPhoto from "@/public/images/nis-hero.png";
 

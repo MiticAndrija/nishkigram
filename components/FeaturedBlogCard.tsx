@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { MotionConfig, motion } from "motion/react";
+import Link from "@/components/MotionLink";
 import type { BlogPost } from "@/lib/blog";
 import { getContentImageUrl, shouldUseUnoptimizedImage } from "@/lib/contentImages";
 
@@ -18,12 +17,8 @@ export default function FeaturedBlogCard({ post }: { post: BlogPost }) {
   const coverImage = getContentImageUrl(post);
 
   return (
-    <MotionConfig reducedMotion="user">
-    <motion.article
-      initial={{ opacity: 0, y: 36 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.18 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+    <article
+      data-reveal
       className="group overflow-hidden rounded-[1.75rem] border border-[#5c4a3d]/10 bg-[#fdfaf6] shadow-sm md:rounded-[2.5rem]"
     >
       <Link href={`/blog/${post.slug}`} className="grid md:grid-cols-[1.3fr_0.7fr]">
@@ -62,7 +57,6 @@ export default function FeaturedBlogCard({ post }: { post: BlogPost }) {
           </div>
         </div>
       </Link>
-    </motion.article>
-    </MotionConfig>
+    </article>
   );
 }

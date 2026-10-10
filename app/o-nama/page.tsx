@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/MotionLink";
 import Navbar from "@/components/Navbar";
 
 const values = [
@@ -24,7 +24,7 @@ export default function AboutPage() {
       <main className="pt-24">
         <section className="relative overflow-hidden px-4 pb-16 pt-12 sm:px-6 md:px-10 md:pb-28 md:pt-16">
           <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1.05fr_0.95fr]">
-            <div className="min-w-0">
+            <div data-enter className="min-w-0">
               <p className="mb-5 text-sm font-semibold uppercase tracking-[0.24em] text-[#8b6f56]">
                 O Niškigramu
               </p>
@@ -77,7 +77,7 @@ export default function AboutPage() {
 
         <section className="bg-[#fdfaf6] px-4 py-14 sm:px-6 md:px-10 md:py-24">
           <div className="mx-auto max-w-6xl">
-            <div className="max-w-3xl">
+            <div data-reveal className="max-w-3xl">
               <h2 className="font-serif text-3xl leading-tight text-[#4a382b] sm:text-4xl md:text-5xl">
                 Šta želimo da grad dobije
               </h2>
@@ -91,6 +91,7 @@ export default function AboutPage() {
             <div className="mt-12 grid gap-6 md:grid-cols-3">
               {values.map((value) => (
                 <article
+                  data-reveal
                   key={value.title}
                   className="rounded-[1.5rem] border border-[#5c4a3d]/10 bg-[#f4efe6] p-6 sm:p-8"
                 >
@@ -117,7 +118,7 @@ export default function AboutPage() {
                 className="h-40 w-40 object-contain md:h-56 md:w-56"
               />
             </div>
-            <div>
+            <div data-reveal>
               <h2 className="font-serif text-3xl leading-tight text-[#4a382b] sm:text-4xl md:text-5xl">
                 Od simbola do svakodnevnice
               </h2>

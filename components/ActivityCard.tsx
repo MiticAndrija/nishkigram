@@ -34,7 +34,7 @@ export default function ActivityCard({ activity, preview = false }: { activity: 
     </>
   );
   const className = "group flex h-full min-w-0 flex-col overflow-hidden rounded-[1.25rem] border border-[#5c4a3d]/10 bg-[#fdfaf6] shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl sm:rounded-[1.5rem] [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#5c4a3d]";
-  return <article className="min-w-0">{preview ? <div className={className}>{content}</div> :
+  return <article data-reveal={!preview || undefined} className="min-w-0">{preview ? <div className={className}>{content}</div> :
     <a href={activity.url} target="_blank" rel="noopener noreferrer" className={className}>{content}</a>}
   </article>;
 }

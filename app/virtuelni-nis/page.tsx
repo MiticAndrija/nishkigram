@@ -42,6 +42,7 @@ export default function VirtualNisPage() {
           className="relative isolate flex min-h-[min(48rem,100svh)] flex-col justify-end overflow-hidden bg-[#2f241d] text-[#fdfaf6] md:min-h-[min(54rem,100svh)]"
         >
           <Image
+            data-enter-image
             src={nisPhoto}
             alt="Niška tvrđava i panorama Niša u suton"
             fill
@@ -57,13 +58,14 @@ export default function VirtualNisPage() {
               Digitalno nasleđe Niša
             </p>
             <h1
+              data-enter
               id="virtual-nis-title"
               className="max-w-5xl font-serif text-[clamp(2.75rem,6.8vw,6.5rem)] leading-[1.06] tracking-[-0.035em]"
             >
               <span className="block">Prošetaj Nišom.</span>
               <span className="block">Odakle god želiš.</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-[#fdfaf6] sm:mt-8 sm:text-xl sm:leading-9">
+            <p data-enter data-motion-delay="0.08" className="mt-6 max-w-xl text-lg leading-8 text-[#fdfaf6] sm:mt-8 sm:text-xl sm:leading-9">
               Istraži znamenitosti Niša, upoznaj njihovu istoriju i otkrij grad iz
               potpuno nove perspektive.
             </p>

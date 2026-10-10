@@ -17,7 +17,7 @@ export default async function ActivitiesPage() {
       <main className="pt-24">
         <section className="px-4 pb-14 pt-12 sm:px-6 md:px-10 md:pb-24 md:pt-16">
           <div className="mx-auto max-w-6xl">
-            <div className="max-w-3xl">
+            <div data-enter className="max-w-3xl">
               <h1 className="font-serif text-4xl leading-tight text-[#4a382b] sm:text-5xl md:text-7xl">Aktuelnost</h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5c4a3d]/80 sm:mt-8 sm:text-xl sm:leading-9">
                 Dešavanja u Nišu na jednom mestu. Koncerti, žurke, izložbe, festivali i druga mesta na kojima vredi biti.

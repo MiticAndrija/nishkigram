@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/MotionLink";
 import type { BlogPost } from "@/lib/blog";
 import {
   getContentImageUrl,
@@ -16,11 +16,13 @@ function formatDate(value: string) {
   }).format(new Date(value));
 }
 
-export default function BlogCard({ post }: { post: BlogPost }) {
+export default function BlogCard({ post, delay = 0 }: { post: BlogPost; delay?: number }) {
   const coverImage = getContentImageUrl(post);
 
   return (
     <Link
+      data-reveal
+      data-motion-delay={delay}
       href={`/blog/${post.slug}`}
       className="group min-w-0 overflow-hidden rounded-[1.25rem] border border-[#5c4a3d]/10 bg-[#fdfaf6] shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl sm:rounded-[1.5rem]"
     >

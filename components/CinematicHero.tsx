@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/MotionLink";
 import { MotionConfig, motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
+import { useReducedSiteMotion } from "@/lib/siteMotion";
 
 export default function CinematicHero() {
+  const reducedMotion = useReducedSiteMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -29,9 +31,10 @@ export default function CinematicHero() {
       <div className="sticky top-0 h-svh overflow-hidden">
         <motion.div
           className="absolute -inset-x-3 -inset-y-12 sm:-inset-x-6 sm:-inset-y-16"
-          style={{ scale: imageScale, y: imageY, willChange: "transform" }}
+          style={{ scale: reducedMotion ? 1 : imageScale, y: reducedMotion ? 0 : imageY, willChange: reducedMotion ? undefined : "transform" }}
         >
           <Image
+            data-enter-image
             src="/images/nis-hero.png"
             alt="Panorama Niša"
             fill
@@ -44,33 +47,35 @@ export default function CinematicHero() {
 
         <motion.div
           className="absolute inset-0 bg-[#2f241d]"
-          style={{ opacity: overlayOpacity }}
+          style={{ opacity: reducedMotion ? 0.18 : overlayOpacity }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent" />
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 pb-16 pt-24 text-center text-[#fdfaf6] sm:px-6">
           <motion.div
             style={{
-              opacity: titleOpacity,
-              scale: titleScale,
-              willChange: "transform, opacity",
+              opacity: reducedMotion ? 1 : titleOpacity,
+              scale: reducedMotion ? 1 : titleScale,
+              willChange: reducedMotion ? undefined : "transform, opacity",
             }}
           >
-            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.3em] text-[#fdfaf6]/80 sm:text-sm">
+            <p data-enter className="mb-5 text-xs font-semibold uppercase tracking-[0.3em] text-[#fdfaf6]/80 sm:text-sm">
               Fotografije <span aria-hidden="true">·</span> Priče{" "}
               <span aria-hidden="true">·</span> Mesta{" "}
               <span aria-hidden="true">·</span> Niš
             </p>
-            <h1 className="font-serif text-[clamp(3.5rem,14vw,10rem)] leading-[0.82] tracking-[-0.055em] drop-shadow-lg">
+            <h1 data-enter data-motion-delay="0.06" className="font-serif text-[clamp(3.5rem,14vw,10rem)] leading-[0.82] tracking-[-0.055em] drop-shadow-lg">
               NIŠKIGRAM
             </h1>
           </motion.div>
 
           <motion.div
             className="mt-8 flex flex-col items-center"
-            style={{ opacity: detailsOpacity, y: detailsY, willChange: "transform, opacity" }}
+            style={{ opacity: reducedMotion ? 1 : detailsOpacity, y: reducedMotion ? 0 : detailsY, willChange: reducedMotion ? undefined : "transform, opacity" }}
           >
             <Link
+              data-enter
+              data-motion-delay="0.14"
               href="/blog"
               className="inline-flex min-h-11 items-center border-b border-[#fdfaf6]/60 px-1 font-semibold text-[#fdfaf6] transition-colors hover:border-[#fdfaf6]"
             >

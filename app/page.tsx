@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/MotionLink";
 import BlogCard from "@/components/BlogCard";
 import CinematicHero from "@/components/CinematicHero";
 import FeaturedBlogCard from "@/components/FeaturedBlogCard";
@@ -54,7 +54,7 @@ export default async function Home() {
           {featuredPost ? (
             <section className="border-y border-[#5c4a3d]/10 bg-[#fdfaf6] px-4 py-16 sm:px-6 md:px-10 md:py-28">
               <div className="mx-auto max-w-6xl">
-                <div className="mb-10 flex flex-col gap-5 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
+                <div data-reveal className="mb-10 flex flex-col gap-5 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
                   <div>
                     <p className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-[#8b6f56]">
                       Novo na sajtu
@@ -103,7 +103,7 @@ export default async function Home() {
                 className="absolute -right-8 top-24 h-48 w-48 rounded-full border border-[#fdfaf6]/10 sm:h-64 sm:w-64"
               />
               <div className="mx-auto max-w-6xl">
-                <div className="relative mb-10 flex flex-col gap-6 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
+                <div data-reveal className="relative mb-10 flex flex-col gap-6 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
                   <div>
                     <p className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-[#d9c4ae]">
                       Niškigram preporučuje

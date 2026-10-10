@@ -115,8 +115,8 @@ export default function BlogSearch({ posts, categories }: BlogSearchProps) {
 
       {filteredPosts.length > 0 ? (
         <div className="mt-8 grid gap-5 md:grid-cols-2 md:gap-7 lg:grid-cols-3">
-          {filteredPosts.map((post) => (
-            <BlogCard key={post.id} post={post} />
+          {filteredPosts.map((post, index) => (
+            <BlogCard key={post.id} post={post} delay={(index % 3) * 0.08} />
           ))}
         </div>
       ) : (

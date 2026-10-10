@@ -117,10 +117,11 @@ export default function RecommendationSearch({
 
       {filteredRecommendations.length > 0 ? (
         <div className="mt-8 grid gap-5 md:grid-cols-2 md:gap-7 lg:grid-cols-3">
-          {filteredRecommendations.map((recommendation) => (
+          {filteredRecommendations.map((recommendation, index) => (
             <RecommendationCard
               key={recommendation.id}
               recommendation={recommendation}
+              delay={(index % 3) * 0.08}
             />
           ))}
         </div>

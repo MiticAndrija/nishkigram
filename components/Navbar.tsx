@@ -1,8 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from "@/components/MotionLink";
+import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useMotionNavigation } from "@/components/SiteMotion";
 
 const searchItems = [
   {
@@ -50,6 +51,8 @@ export default function Navbar() {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
+  const navigate = useMotionNavigation();
   const isAboutPage = pathname === "/o-nama";
   const hasPhotoHero = pathname === "/" || pathname === "/virtuelni-nis";
   const isTransparent = hasPhotoHero && !isScrolled && !isMenuOpen;
@@ -129,7 +132,12 @@ export default function Navbar() {
     event.preventDefault();
 
     if (results[0]) {
-      window.location.href = results[0].href;
+      const href = results[0].href;
+      if (href.startsWith("/")) {
+        if (!navigate?.(href, {})) router.push(href);
+      } else {
+        window.location.href = href;
+      }
       setIsSearchOpen(false);
     }
   };
@@ -339,10 +347,10 @@ export default function Navbar() {
                 </svg>
               </button>
             </form>
-            <div className="max-h-[60vh] overflow-y-auto p-3">
+            <div data-lenis-prevent className="max-h-[60vh] overflow-y-auto p-3">
               {results.length > 0 ? (
                 results.map((item) => (
-                  <a
+                  <Link
                     key={item.title}
                     href={item.href}
                     target={item.href.startsWith("http") ? "_blank" : undefined}
@@ -360,7 +368,7 @@ export default function Navbar() {
                     <span className="mt-1 block text-sm text-[#5c4a3d]/70">
                       {item.description}
                     </span>
-                  </a>
+                  </Link>
                 ))
               ) : (
                 <div className="px-4 py-8 text-center text-[#5c4a3d]/70">

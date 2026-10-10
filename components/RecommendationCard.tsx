@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/MotionLink";
 import {
   getContentImageUrl,
   shouldUseUnoptimizedImage,
@@ -18,13 +18,17 @@ function formatDate(value: string) {
 
 export default function RecommendationCard({
   recommendation,
+  delay = 0,
 }: {
   recommendation: Recommendation;
+  delay?: number;
 }) {
   const coverImage = getContentImageUrl(recommendation);
 
   return (
     <Link
+      data-reveal
+      data-motion-delay={delay}
       href={`/preporuke/${recommendation.slug}`}
       className="group min-w-0 overflow-hidden rounded-[1.25rem] border border-[#5c4a3d]/10 bg-[#fdfaf6] shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl sm:rounded-[1.5rem]"
     >
